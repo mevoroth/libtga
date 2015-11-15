@@ -23,7 +23,7 @@ namespace Tga
 		_ImageData.ImageData = nullptr;
 	}
 
-	void TgaImage::_Read(u8* Dst, u8* Src, u32 Size, u32& ReadOffset)
+	void TgaImage::_Read(u8* Dst, const u8* Src, u32 Size, u32& ReadOffset)
 	{
 		memcpy(Dst, Src, Size);
 		ReadOffset += Size;
@@ -74,11 +74,18 @@ namespace Tga
 		if (_IsUncompressed())
 		{
 			u32 PixelSize = _ImageHeader.ImageSpec.Depth / 8;
-			u32 ImageSize = _ImageHeader.ImageSpec.Width * _ImageHeader.ImageSpec.Height;
+			u32 Width = _ImageHeader.ImageSpec.Width;
+			u32 Height = _ImageHeader.ImageSpec.Height;
+			u32 LineSize = Width * PixelSize;
 
-			_ImageData.ImageData = new u8[PixelSize * ImageSize];
+			_ImageData.ImageData = new u8[PixelSize * Width * Height];
 
-			memcpy(_ImageData.ImageData, RawData, PixelSize * ImageSize);
+			for (u32 Y = 0; Y < Height; ++Y)
+			{
+				u32 OffsetInMemory = Y * Width * PixelSize;
+				u32 OffsetInFile = (Height - Y - 1) * Width * PixelSize;
+				memcpy(&_ImageData.ImageData[OffsetInMemory], RawData + OffsetInFile, LineSize);
+			}
 
 			return;
 		}

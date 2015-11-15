@@ -41,6 +41,9 @@ namespace Tga
 	{
 		u8* ImageID;
 		u8* ColorMapData;
+		/**
+		 * BGRA block
+		 */
 		u8* ImageData;
 	};
 
@@ -51,7 +54,19 @@ namespace Tga
 		~TgaImage();
 
 	private:
-		void _Read(u8* Dst, u8* Src, u32 Size, u32& ReadOffset);
+		/**
+		 * Generic read buffer
+		 * @param[out] Intern buffer
+		 * @param[in] Extern buffer
+		 * @param[in] Size of chunk to read
+		 * @param[inout] Current offset after read
+		 */
+		void _Read(u8* Dst, const u8* Src, u32 Size, u32& ReadOffset);
+		/**
+		 * Read Header block
+		 * @param[out] Intern buffer
+		 * @param[inout] Current offset after read
+		 */
 		void _ReadHeader(u8* RawData, u32& ReadOffset);
 		void _ReadData(u8* RawData);
 		void _ReadImageID(u8* RawData);
