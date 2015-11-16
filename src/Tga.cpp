@@ -23,7 +23,7 @@ namespace Tga
 		_ImageData.ImageData = nullptr;
 	}
 	
-	TgaImage::GetImage(u32& Width, u32& Height, u8* ImageData)
+	void TgaImage::GetImage(u32& Width, u32& Height, u8* ImageData)
 	{
 		Width = _ImageHeader.ImageSpec.Width;
 		Height = _ImageHeader.ImageSpec.Height;
@@ -39,6 +39,7 @@ namespace Tga
 
 	void TgaImage::_ReadHeader(u8* RawData, u32& ReadOffset)
 	{
+		// Image general info
 		_Read(&_ImageHeader.IDLength, RawData, sizeof(u8), ReadOffset);
 		_Read(&_ImageHeader.ColorMapType, RawData + ReadOffset, sizeof(u8), ReadOffset);
 		_Read(&_ImageHeader.ImageType, RawData + ReadOffset, sizeof(u8), ReadOffset);

@@ -50,6 +50,10 @@ namespace Tga
 	class TgaImage
 	{
 	public:
+		/**
+		 * @param[in] Extern buffer
+		 * @param[in] Size of extern buffer
+		 */
 		TgaImage(u8* RawData, u64 Size);
 		~TgaImage();
 		/**
@@ -75,11 +79,33 @@ namespace Tga
 		 * @param[inout] Current offset after read
 		 */
 		void _ReadHeader(u8* RawData, u32& ReadOffset);
+		/**
+		 * Read Image data
+		 * @param[in] Extern buffer
+		 */
 		void _ReadData(u8* RawData);
+		/**
+		 * Read Image ID
+		 * @param[in] Extern buffer
+		 */
 		void _ReadImageID(u8* RawData);
+		/**
+		 * Read Mapped Image Data
+		 * @param[in] Extern buffer
+		 */
 		void _ReadMappedImageData(u8* RawData);
+		/**
+		 * Read Direct Image Data
+		 * @param[in] Extern buffer
+		 */
 		void _ReadDirectImageData(u8* RawData);
+		/**
+		 * @return If TGA file is uncompressed
+		 */
 		bool _IsUncompressed() const;
+		/**
+		 * @return If TGA file is compressed
+		 */
 		bool _IsCompressed() const;
 
 		Header _ImageHeader;
