@@ -1,4 +1,4 @@
-﻿#ifndef _TGA_H_
+#ifndef _TGA_H_
 #define _TGA_H_
 
 namespace Tga
@@ -52,6 +52,13 @@ namespace Tga
 	public:
 		TgaImage(u8* RawData, u64 Size);
 		~TgaImage();
+		/**
+		 * Get Image data
+		 * @param[out] Width
+		 * @param[out] Height
+		 * @param[out] Image Data (BGRA)
+		 */
+		void GetImage(u32& Width, u32& Height, u8* ImageData);
 
 	private:
 		/**

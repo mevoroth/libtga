@@ -22,6 +22,14 @@ namespace Tga
 		delete[] _ImageData.ImageData;
 		_ImageData.ImageData = nullptr;
 	}
+	
+	TgaImage::GetImage(u32& Width, u32& Height, u8* ImageData)
+	{
+		Width = _ImageHeader.ImageSpec.Width;
+		Height = _ImageHeader.ImageSpec.Height;
+		u32 PixelSize = _ImageHeader.ImageSpec.Depth / 8;
+		memcpy(ImageData, _ImageData.ImageData, Width * Height * PixelSize);
+	}
 
 	void TgaImage::_Read(u8* Dst, const u8* Src, u32 Size, u32& ReadOffset)
 	{
