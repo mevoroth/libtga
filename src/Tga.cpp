@@ -70,6 +70,16 @@ namespace Tga
 		{
 			_ReadDirectImageData(ImageData);
 		}
+		
+		if (_IsVerticalInverted())
+		{
+			
+		}
+		
+		if (_IsHorizontalInverted())
+		{
+			
+		}
 	}
 
 	void TgaImage::_ReadImageID(u8* RawData)
@@ -118,5 +128,13 @@ namespace Tga
 	bool TgaImage::_IsCompressed() const
 	{
 		return _ImageHeader.ImageType == TGA_COMPRESSED;
+	}
+	bool TgaImage::_IsVerticalInverted() const
+	{
+		return _ImageHeader.ImageSpec.ImageDesc & TGA_VERTICAL_INVERTED;
+	}
+	bool TgaImage::_IsHorizontalInverted() const
+	{
+		return _ImageHeader.ImageSpec.ImageDesc & TGA_HORIZONTAL_INVERTED;
 	}
 }

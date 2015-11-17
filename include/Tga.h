@@ -10,6 +10,8 @@ namespace Tga
 
 	const u8 TGA_UNCOMPRESSED = 2;
 	const u8 TGA_COMPRESSED = 10;
+	const u8 TGA_HORIZONTAL_INVERTED = (1 << 4);
+	const u8 TGA_VERTICAL_INVERTED = (1 << 5);
 
 	struct ColorMapSpec
 	{
@@ -107,6 +109,9 @@ namespace Tga
 		 * @return If TGA file is compressed
 		 */
 		bool _IsCompressed() const;
+		
+		bool _IsVerticalInverted() const;
+		bool _IsHorizontalInverted() const;
 
 		Header _ImageHeader;
 		Data _ImageData;
