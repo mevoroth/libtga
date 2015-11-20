@@ -73,7 +73,18 @@ namespace Tga
 		
 		if (_IsVerticalInverted())
 		{
-			
+			u32 PixelSize = _ImageHeader.ImageSpec.Depth / 8;
+			u32 Width = _ImageHeader.ImageSpec.Width;
+			u32 LineSize = Width * PixelSize;
+			u8* TempLine = new u8[_ImageHeader.ImageSpec.Width * PixelSize];
+			for (u32 Y = 0, Height = _ImageHeader.ImageSpec.Height, SwappedY = Height - 1; Y < Height; ++Y, --SwappedY)
+			{
+				u32 Offset = Y * LineSize;
+				u32 OffsetSwapped = SwappedY * LineSize;
+				memcpy(TempLine, &_ImageData.ImageData[Offset], LineSize);
+				memcpy(&_ImageData.ImageData[Offset], &_ImageData.ImageData[OffsetSwapped], LineSize);
+				memcpy(&_ImageData.ImageData[OffsetSwapped], TempLine, LineSize);
+			}
 		}
 		
 		if (_IsHorizontalInverted())
