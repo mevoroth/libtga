@@ -23,11 +23,12 @@ namespace Tga
 		_ImageData.ImageData = nullptr;
 	}
 	
-	void TgaImage::GetImage(u32& Width, u32& Height, u8* ImageData)
+	void TgaImage::GetImage(u32& Width, u32& Height, u8*& ImageData)
 	{
 		Width = _ImageHeader.ImageSpec.Width;
 		Height = _ImageHeader.ImageSpec.Height;
 		u32 PixelSize = _ImageHeader.ImageSpec.Depth / 8;
+		ImageData = new u8[Width * Height * PixelSize];
 		memcpy(ImageData, _ImageData.ImageData, Width * Height * PixelSize);
 	}
 
