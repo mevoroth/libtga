@@ -91,7 +91,7 @@ namespace Tga
 		
 		if (_IsHorizontalInverted())
 		{
-			
+			assert(false); // Not supported
 		}
 	}
 
