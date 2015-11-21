@@ -10,8 +10,8 @@ namespace Tga
 
 	const u8 TGA_UNCOMPRESSED = 2;
 	const u8 TGA_COMPRESSED = 10;
-	const u8 TGA_HORIZONTAL_INVERTED = (1 << 4);
-	const u8 TGA_VERTICAL_INVERTED = (1 << 5);
+	const u8 TGA_VERTICAL_TOP_TO_BOTTOM = (1 << 4);
+	const u8 TGA_HORIZONTAL_RIGHT_TO_LEFT = (1 << 5);
 
 	struct ColorMapSpec
 	{

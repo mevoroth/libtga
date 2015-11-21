@@ -75,9 +75,11 @@ namespace Tga
 		{
 			u32 PixelSize = _ImageHeader.ImageSpec.Depth / 8;
 			u32 Width = _ImageHeader.ImageSpec.Width;
+			u32 Height = _ImageHeader.ImageSpec.Height;
+
 			u32 LineSize = Width * PixelSize;
 			u8* TempLine = new u8[_ImageHeader.ImageSpec.Width * PixelSize];
-			for (u32 Y = 0, Height = _ImageHeader.ImageSpec.Height, SwappedY = Height - 1; Y < Height; ++Y, --SwappedY)
+			for (u32 Y = 0, HeightDiv2 = Height / 2, SwappedY = Height - 1; Y < HeightDiv2; ++Y, --SwappedY)
 			{
 				u32 Offset = Y * LineSize;
 				u32 OffsetSwapped = SwappedY * LineSize;
@@ -136,10 +138,10 @@ namespace Tga
 	}
 	bool TgaImage::_IsVerticalInverted() const
 	{
-		return _ImageHeader.ImageSpec.ImageDesc & TGA_VERTICAL_INVERTED;
+		return !(_ImageHeader.ImageSpec.ImageDesc & TGA_VERTICAL_TOP_TO_BOTTOM);
 	}
 	bool TgaImage::_IsHorizontalInverted() const
 	{
-		return _ImageHeader.ImageSpec.ImageDesc & TGA_HORIZONTAL_INVERTED;
+		return _ImageHeader.ImageSpec.ImageDesc & TGA_HORIZONTAL_RIGHT_TO_LEFT;
 	}
 }
