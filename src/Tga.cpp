@@ -106,16 +106,10 @@ namespace Tga
 			u32 PixelSize = _ImageHeader.ImageSpec.Depth / 8;
 			u32 Width = _ImageHeader.ImageSpec.Width;
 			u32 Height = _ImageHeader.ImageSpec.Height;
-			u32 LineSize = Width * PixelSize;
+			u32 ImageSize = PixelSize * Width * Height;
 
-			_ImageData.ImageData = new u8[PixelSize * Width * Height];
-
-			for (u32 Y = 0; Y < Height; ++Y)
-			{
-				u32 OffsetInMemory = Y * Width * PixelSize;
-				u32 OffsetInFile = (Height - Y - 1) * Width * PixelSize;
-				memcpy(&_ImageData.ImageData[OffsetInMemory], RawData + OffsetInFile, LineSize);
-			}
+			_ImageData.ImageData = new u8[ImageSize];
+			memcpy(_ImageData.ImageData, RawData, ImageSize);
 
 			return;
 		}
