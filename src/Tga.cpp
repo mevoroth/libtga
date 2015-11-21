@@ -142,6 +142,6 @@ namespace Tga
 	}
 	bool TgaImage::_IsHorizontalInverted() const
 	{
-		return _ImageHeader.ImageSpec.ImageDesc & TGA_HORIZONTAL_RIGHT_TO_LEFT;
+		return (_ImageHeader.ImageSpec.ImageDesc & TGA_HORIZONTAL_RIGHT_TO_LEFT) != 0;
 	}
 }
