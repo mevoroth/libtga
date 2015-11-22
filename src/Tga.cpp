@@ -27,9 +27,8 @@ namespace Tga
 	{
 		Width = _ImageHeader.ImageSpec.Width;
 		Height = _ImageHeader.ImageSpec.Height;
-		u32 PixelSize = _ImageHeader.ImageSpec.Depth / 8;
-		ImageData = new u8[Width * Height * PixelSize];
-		memcpy(ImageData, _ImageData.ImageData, Width * Height * PixelSize);
+		ImageData = new u8[Width * Height * 4];
+		memcpy(ImageData, _ImageData.ImageData, Width * Height * 4);
 	}
 
 	void TgaImage::_Read(u8* Dst, const u8* Src, u32 Size, u32& ReadOffset)
@@ -74,7 +73,7 @@ namespace Tga
 		
 		if (_IsVerticalInverted())
 		{
-			u32 PixelSize = _ImageHeader.ImageSpec.Depth / 8;
+			u32 PixelSize = 4;
 			u32 Width = _ImageHeader.ImageSpec.Width;
 			u32 Height = _ImageHeader.ImageSpec.Height;
 
@@ -111,8 +110,30 @@ namespace Tga
 			u32 Height = _ImageHeader.ImageSpec.Height;
 			u32 ImageSize = PixelSize * Width * Height;
 
-			_ImageData.ImageData = new u8[ImageSize];
-			memcpy(_ImageData.ImageData, RawData, ImageSize);
+			_ImageData.ImageData = new u8[Width * Height * 4];
+
+			switch (PixelSize)
+			{
+			case 4:
+				memcpy(_ImageData.ImageData, RawData, ImageSize);
+				break;
+			case 3:
+			{
+				for (u32 Y = 0; Y < Height; ++Y)
+				{
+					u32 Line = Y * Width;
+					for (u32 X = 0; X < Width; ++X)
+					{
+						memcpy(&_ImageData.ImageData[(Line + X) * 4], &RawData[(Line + X) * PixelSize], PixelSize);
+						_ImageData.ImageData[(Line + X) * 4 + 3] = 255;
+					}
+				}
+				break;
+			}
+			default:
+				assert(false); // Not supported
+				break;
+			}
 
 			return;
 		}
