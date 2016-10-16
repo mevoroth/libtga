@@ -28,7 +28,19 @@ namespace Tga
 		Width = _ImageHeader.ImageSpec.Width;
 		Height = _ImageHeader.ImageSpec.Height;
 		ImageData = new u8[Width * Height * 4];
-		memcpy(ImageData, _ImageData.ImageData, Width * Height * 4);
+		if (_ImageHeader.ImageSpec.Depth >= 24) // 4 bytes
+			memcpy(ImageData, _ImageData.ImageData, Width * Height * 4);
+		else if (_ImageHeader.ImageSpec.Depth == 8)
+		{
+			for (u32 Pixel = 0, PixelCount = Width*Height; Pixel < PixelCount; ++Pixel)
+			{
+				ImageData[Pixel] = (_ImageData.ImageData[Pixel] << 8) | 0xFF; // Only R
+			}
+		}
+		else
+		{
+			assert(false);
+		}
 	}
 
 	void TgaImage::_Read(u8* Dst, const u8* Src, u32 Size, u32& ReadOffset)
@@ -73,7 +85,7 @@ namespace Tga
 		
 		if (_IsVerticalInverted())
 		{
-			u32 PixelSize = 4;
+			u32 PixelSize = _ImageHeader.ImageSpec.Depth / 8;
 			u32 Width = _ImageHeader.ImageSpec.Width;
 			u32 Height = _ImageHeader.ImageSpec.Height;
 
@@ -144,6 +156,21 @@ namespace Tga
 			
 			return;
 		}
+
+		if (_IsGreyScale())
+		{
+			u32 Width = _ImageHeader.ImageSpec.Width;
+			u32 Height = _ImageHeader.ImageSpec.Height;
+			u32 ImageSize = Width * Height;
+
+			assert(_ImageHeader.ImageSpec.Depth == 8);
+
+			_ImageData.ImageData = new u8[ImageSize];
+
+			memcpy(_ImageData.ImageData, RawData, ImageSize);
+
+			return;
+		}
 	}
 	void TgaImage::_ReadMappedImageData(u8* RawData)
 	{
@@ -157,6 +184,10 @@ namespace Tga
 	bool TgaImage::_IsCompressed() const
 	{
 		return _ImageHeader.ImageType == TGA_COMPRESSED;
+	}
+	bool TgaImage::_IsGreyScale() const
+	{
+		return _ImageHeader.ImageType == TGA_GREYSCALE;
 	}
 	bool TgaImage::_IsVerticalInverted() const
 	{

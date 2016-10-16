@@ -8,8 +8,9 @@ namespace Tga
 	typedef unsigned int u32;
 	typedef unsigned long long u64;
 
-	const u8 TGA_UNCOMPRESSED = 2;
-	const u8 TGA_COMPRESSED = 10;
+	const u8 TGA_UNCOMPRESSED	= 2;
+	const u8 TGA_GREYSCALE		= 3;
+	const u8 TGA_COMPRESSED		= 10;
 	const u8 TGA_VERTICAL_TOP_TO_BOTTOM = (1 << 4);
 	const u8 TGA_HORIZONTAL_RIGHT_TO_LEFT = (1 << 5);
 
@@ -109,6 +110,10 @@ namespace Tga
 		 * @return If TGA file is compressed
 		 */
 		bool _IsCompressed() const;
+		/**
+		 * @return If TGA file is greyscale
+		 */
+		bool _IsGreyScale() const;
 		
 		bool _IsVerticalInverted() const;
 		bool _IsHorizontalInverted() const;
