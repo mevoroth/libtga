@@ -63,9 +63,9 @@ namespace Tga
 		 * Get Image data
 		 * @param[out] Width
 		 * @param[out] Height
-		 * @param[out] Image Data (BGRA)
+		 * @return Image Data (BGRA)
 		 */
-		void GetImage(u32& Width, u32& Height, u8*& ImageData);
+		u8* GetImage(u32& Width, u32& Height);
 
 	private:
 		/**

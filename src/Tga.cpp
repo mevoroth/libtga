@@ -23,24 +23,25 @@ namespace Tga
 		_ImageData.ImageData = nullptr;
 	}
 	
-	void TgaImage::GetImage(u32& Width, u32& Height, u8*& ImageData)
+	u8* TgaImage::GetImage(u32& Width, u32& Height)
 	{
 		Width = _ImageHeader.ImageSpec.Width;
 		Height = _ImageHeader.ImageSpec.Height;
-		ImageData = new u8[Width * Height * 4];
+		u8* ImageData = new u8[Width * Height * 4];
 		if (_ImageHeader.ImageSpec.Depth >= 24) // 4 bytes
 			memcpy(ImageData, _ImageData.ImageData, Width * Height * 4);
 		else if (_ImageHeader.ImageSpec.Depth == 8)
 		{
 			for (u32 Pixel = 0, PixelCount = Width*Height; Pixel < PixelCount; ++Pixel)
-			{
 				ImageData[Pixel] = (_ImageData.ImageData[Pixel] << 8) | 0xFF; // Only R
-			}
 		}
 		else
 		{
+			delete[] ImageData;
+			ImageData = nullptr;
 			assert(false);
 		}
+		return ImageData;
 	}
 
 	void TgaImage::_Read(u8* Dst, const u8* Src, u32 Size, u32& ReadOffset)
