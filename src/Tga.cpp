@@ -85,39 +85,39 @@ namespace Tga
 			_ReadDirectImageData(ImageData);
 		}
 
-		u32 PixelSize = _ImageHeader.ImageSpec.Depth / 8;
-		u32 Width = _ImageHeader.ImageSpec.Width;
-		u32 Height = _ImageHeader.ImageSpec.Height;
-		u32 LineSize = Width * PixelSize;
+		u32 PixelSize	= 4;
+		u32 Width		= _ImageHeader.ImageSpec.Width;
+		u32 Height		= _ImageHeader.ImageSpec.Height;
+		u32 LineSize	= Width * PixelSize;
 
 		if (_IsVerticalInverted())
 		{
-			//u8* TempLine = (u8*)_alloca(_ImageHeader.ImageSpec.Width * PixelSize);
-			//for (u32 Y = 0, HeightDiv2 = Height / 2, SwappedY = Height - 1; Y < HeightDiv2; ++Y, --SwappedY)
-			//{
-			//	u32 Offset = Y * LineSize;
-			//	u32 OffsetSwapped = SwappedY * LineSize;
-			//	memcpy(TempLine, &_ImageData.ImageData[Offset], LineSize);
-			//	memcpy(&_ImageData.ImageData[Offset], &_ImageData.ImageData[OffsetSwapped], LineSize);
-			//	memcpy(&_ImageData.ImageData[OffsetSwapped], TempLine, LineSize);
-			//}
+			u8* TempLine = (u8*)alloca(_ImageHeader.ImageSpec.Width * PixelSize);
+			for (u32 Y = 0, HeightDiv2 = Height / 2, SwappedY = Height - 1; Y < HeightDiv2; ++Y, --SwappedY)
+			{
+				u32 Offset = Y * LineSize;
+				u32 OffsetSwapped = SwappedY * LineSize;
+				memcpy(TempLine, &_ImageData.ImageData[Offset], LineSize);
+				memcpy(&_ImageData.ImageData[Offset], &_ImageData.ImageData[OffsetSwapped], LineSize);
+				memcpy(&_ImageData.ImageData[OffsetSwapped], TempLine, LineSize);
+			}
 		}
 		
 		if (_IsHorizontalInverted())
 		{
-			//u8* TempPixel = (u8*)_alloca(PixelSize);
-			//for (u32 Y = 0; Y < Height; ++Y)
-			//{
-			//	u32 OffsetY = Y * LineSize;
-			//	for (u32 X = 0, WidthDiv2 = Width / 2; X < WidthDiv2; ++X)
-			//	{
-			//		u32 OffsetX = X * PixelSize;
-			//		u32 OffsetSwappedX = (Width - X - 1) * PixelSize;
-			//		memcpy(TempPixel, &_ImageData.ImageData[OffsetY + OffsetX], PixelSize);
-			//		memcpy(&_ImageData.ImageData[OffsetY + OffsetX], &_ImageData.ImageData[OffsetY + OffsetSwappedX], PixelSize);
-			//		memcpy(&_ImageData.ImageData[OffsetY + OffsetSwappedX], TempPixel, PixelSize);
-			//	}
-			//}
+			u8* TempPixel = (u8*)alloca(PixelSize);
+			for (u32 Y = 0; Y < Height; ++Y)
+			{
+				u32 OffsetY = Y * LineSize;
+				for (u32 X = 0, WidthDiv2 = Width / 2; X < WidthDiv2; ++X)
+				{
+					u32 OffsetX = X * PixelSize;
+					u32 OffsetSwappedX = (Width - X - 1) * PixelSize;
+					memcpy(TempPixel, &_ImageData.ImageData[OffsetY + OffsetX], PixelSize);
+					memcpy(&_ImageData.ImageData[OffsetY + OffsetX], &_ImageData.ImageData[OffsetY + OffsetSwappedX], PixelSize);
+					memcpy(&_ImageData.ImageData[OffsetY + OffsetSwappedX], TempPixel, PixelSize);
+				}
+			}
 		}
 	}
 
