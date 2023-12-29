@@ -2,7 +2,11 @@
 
 #include <cassert>
 #include <cstring>
+#if defined (__WIN32__)
 #include <malloc.h>
+#else
+#include <cstdlib>
+#endif
 
 namespace Tga
 {
