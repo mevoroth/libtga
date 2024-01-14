@@ -2,7 +2,7 @@
 
 #include <cassert>
 #include <cstring>
-#if defined (__WIN32__)
+#if defined (_WIN32)
 #include <malloc.h>
 #else
 #include <cstdlib>
